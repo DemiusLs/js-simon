@@ -20,3 +20,20 @@ Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei num
 - [x] Creare il pulsante di conferma per inviare i dati e ricevere risposta
 
 - [x] Creare dove visualizzare il risultato del gioco
+
+### Milestone 2 - Creazioni funzioni js
+
+- [ ] Importare gli elementi html nel dom 
+
+- [ ] Creare la funzione per il click del pulsante di start :
+
+- [ ] modificare la consegna 
+- [ ] generare i numeri da memorizzare
+- [ ] mostrare i numeri da memorizzare
+- [ ] far partire il countdown
+
+- [ ] Creare la funzione per il click del pulsante di conferma del form :  
+
+- [ ] prendo i valori dagli input
+- [ ] controllo quanti di questi sono nell'array generato inizialmente 
+- [ ] stampo il risultato
