@@ -25,12 +25,12 @@ Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei num
 
 - [x] Importare gli elementi html nel dom 
 
-- [ ] Creare la funzione per il click del pulsante di start :
+- [x] Creare la funzione per il click del pulsante di start :
 
 - [x] modificare la consegna 
 - [x] generare i numeri da memorizzare
-- [ ] mostrare i numeri da memorizzare
-- [ ] far partire il countdown
+- [x] mostrare i numeri da memorizzare
+- [x] far partire il countdown e mostrarlo a schermo
 
 - [ ] Creare la funzione per il click del pulsante di conferma del form :  
 

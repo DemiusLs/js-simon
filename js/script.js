@@ -2,7 +2,9 @@ const startStr = document.getElementById("start-str");
 const startBtn = document.getElementById("start-btn");
 const memoStr = document.getElementById("memo-str");
 const timerStr = document.getElementById("timer-str");
+const outputStr = document.getElementById("out-str");
 // Variabili del form
+const gameForm = document.getElementById("game-form");
 const num1Str = document.getElementById("num1");
 const num2Str = document.getElementById("num2");
 const num3Str = document.getElementById("num3");
@@ -10,25 +12,57 @@ const num4Str = document.getElementById("num4");
 const num5Str = document.getElementById("num5");
 const formBtn = document.getElementById("form-btn")
 
+
+
+
+
+
+
+
+
+
+// variabili di programma
+const maxTime = 30;
+modifyInner(timerStr, maxTime)
+
+let quizArr = [];
+let memoArr = [];
+let resArray = [];
+let gameStarted = false;
+let timerOn = false;
+
 // Frase di output
+
 
 const outStr = document.getElementById("out-str")
 
 
 // funzione al click del tasto start
 
-startBtn.addEventListener("click", gameStart)
+startBtn.addEventListener("click", gameStart);
+gameForm.addEventListener("submit", gameEnd)
+
 
 // Dichiarazione delle funzioni
 
 function gameStart() {
+
+    console.log(gameForm[0].value)
     //cambiare il testo di startStr    
     modifyInner(startStr, "Memorizza i numeri sottostanti")
-    //generare i numeri da stampare
-    getRandomInt(-100,100) 
+    //modifico anche il testo del bottone
+    modifyInner(startBtn, "Restart")
+    // console.log(arrRandom(5, -100, 100));
+    //generare i numeri da stampare visualizzare i numeri generati 
+    quizArr = arrRandom(5, -100, 100)
+    //visualizzo i numeri generati
+    modifyInner(memoStr, quizArr);
+    //copio i dati per mostrarli succesivamente
+    memoArr = quizArr;
 
-    //visualizzare i numeri generati
     //far partire il timer
+    timer(maxTime);
+
 
 }
 
@@ -40,7 +74,7 @@ function gameStart() {
  * @param {string} string 
  */
 function modifyInner(elem, string) {
-    elem.innerText = string
+    elem.innerHTML = string
 };
 
 
@@ -51,9 +85,118 @@ function getRandomInt(min, max) {
     // The maximum is inclusive and the minimum is inclusive
 }
 
-function arrRandom(num) {
 
-    for(i = 0 ; i < num ; i++){
-        
+/**
+ * Crea un array di num valori random compresi fra min e max
+ *
+ * @param {number} num 
+ * @param {number} min 
+ * @param {number} max 
+ * @returns {{}} 
+ */
+function arrRandom(num, min, max) {
+    let array = [];
+
+    for (i = 0; i < num; i++) {
+        let randomNum = getRandomInt(min, max);
+        array.push(randomNum)
     }
+
+    return array
 }
+
+
+/**
+ * Questa funzione fa partire il timer e agisce direttamente sulla variabile globale gameStarded
+ * modifica gli innerHtml degli elementi memoStr e timerStr per visualizzare le fasi del gioco
+ *Sinceramente non mi piace agire direttamente sulla variabe, cercare un altro modo
+ * 
+ * @param {number} maxTime 
+ */
+function timer(maxTime) {
+    let count = maxTime
+
+    if (!gameStarted) {
+        timerOn = true
+        gameStarted = true;
+        intervalId = setInterval(function () {
+
+            if (count === 0) {
+                clearInterval(intervalId)
+                modifyInner(memoStr, "Inserisci i dati negli spazi sottostanti, </b> non importa l'ordine in cui li inserisci ")
+                gameForm.reset();
+                gameStarted = false
+
+            } else {
+                count--
+            }
+
+            modifyInner(timerStr, count)
+        }, 1000)
+
+    } else {
+        gameStarted = false;
+        clearInterval(intervalId);
+        count = maxTime;
+        modifyInner(timerStr, count);
+        modifyInner(memoStr, "hai premuto reset, ripremilo per restartare il gioco")
+    }
+
+    console.log(gameStarted)
+
+}
+
+
+function gameEnd(event) {
+
+    event.preventDefault();
+
+    let newArr = []
+    let win = false
+
+    if (gameStarted) {
+        console.log("devi aspettare che finisca il timer")
+
+
+    } else {
+
+        for (i = 0; i < gameForm.length - 1; i++) {
+
+
+            let quizNum = parseInt(gameForm[i].value)
+
+
+            if (quizArr.includes(quizNum)) {
+
+
+                quizArr = quizArr.filter(function (el) {
+                    return el !== quizNum;
+                });
+
+
+                win = true;
+                newArr.push(quizNum)
+                console.log("nerArr", newArr);
+                console.log("quizArr", quizArr);
+
+
+            }
+        }
+
+        if (win) {
+            modifyInner(outputStr, `Complimenti hai vinto, hai indovinato ${newArr.length} numeri su 5 </b>
+                       numeri da indovinare ${memoArr}  numeri indovinati ${newArr}`)
+        } else {
+            modifyInner(outputStr, `Mi spiace ma non hai indovinato nessun numero, ritenta`)
+        }
+
+    }
+
+
+}
+
+
+
+
+
+
