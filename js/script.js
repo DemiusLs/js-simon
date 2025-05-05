@@ -155,7 +155,7 @@ function gameEnd(event) {
     let win = false
 
     if (gameStarted) {
-        console.log("devi aspettare che finisca il timer")
+        modifyInner(outputStr, `Aspetta che il timer sia arrivato a 0`)
 
 
     } else {
