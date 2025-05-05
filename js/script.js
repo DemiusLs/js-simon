@@ -22,7 +22,7 @@ const formBtn = document.getElementById("form-btn")
 
 
 // variabili di programma
-const maxTime = 30;
+const maxTime = 5;
 modifyInner(timerStr, maxTime)
 
 let quizArr = [];
@@ -43,11 +43,11 @@ startBtn.addEventListener("click", gameStart);
 gameForm.addEventListener("submit", gameEnd)
 
 
-// Dichiarazione delle funzioni
+// Dichiarazione delle funzioni che lavorano su variabili globali
 
 function gameStart() {
 
-    console.log(gameForm[0].value)
+
     //cambiare il testo di startStr    
     modifyInner(startStr, "Memorizza i numeri sottostanti")
     //modifico anche il testo del bottone
@@ -87,7 +87,7 @@ function getRandomInt(min, max) {
 
 
 /**
- * Crea un array di num valori random compresi fra min e max
+ * Crea un array di lunghezza num valori random compresi fra min e max
  *
  * @param {number} num 
  * @param {number} min 
@@ -97,9 +97,16 @@ function getRandomInt(min, max) {
 function arrRandom(num, min, max) {
     let array = [];
 
-    for (i = 0; i < num; i++) {
+
+    for (i = 0; array.length < num; i++) {
+
         let randomNum = getRandomInt(min, max);
-        array.push(randomNum)
+
+        if (!array.includes(randomNum)) {
+            array.push(randomNum)
+
+        }
+
     }
 
     return array
@@ -119,13 +126,17 @@ function timer(maxTime) {
     if (!gameStarted) {
         timerOn = true
         gameStarted = true;
+        gameForm.classList.add("d-none")
         intervalId = setInterval(function () {
 
             if (count === 0) {
                 clearInterval(intervalId)
                 modifyInner(memoStr, "Inserisci i dati negli spazi sottostanti, </b> non importa l'ordine in cui li inserisci ")
+                modifyInner(outStr, "")
                 gameForm.reset();
                 gameStarted = false
+
+                gameForm.classList.remove("d-none")
 
             } else {
                 count--
@@ -140,6 +151,7 @@ function timer(maxTime) {
         count = maxTime;
         modifyInner(timerStr, count);
         modifyInner(memoStr, "hai premuto reset, ripremilo per restartare il gioco")
+        gameForm.classList.add("d-none")
     }
 
     console.log(gameStarted)
@@ -147,12 +159,20 @@ function timer(maxTime) {
 }
 
 
+/**
+ * Description placeholder
+ *
+ * @param {*} event 
+ * 
+ * 
+ * 
+ */
 function gameEnd(event) {
 
     event.preventDefault();
 
     let newArr = []
-    let win = false
+
 
     if (gameStarted) {
         modifyInner(outputStr, `Aspetta che il timer sia arrivato a 0`)
@@ -174,7 +194,7 @@ function gameEnd(event) {
                 });
 
 
-                win = true;
+
                 newArr.push(quizNum)
                 console.log("nerArr", newArr);
                 console.log("quizArr", quizArr);
@@ -183,7 +203,7 @@ function gameEnd(event) {
             }
         }
 
-        if (win) {
+        if (newArr.length != 0) {
             modifyInner(outputStr, `Complimenti hai vinto, hai indovinato ${newArr.length} numeri su 5 </b>
                        numeri da indovinare ${memoArr}  numeri indovinati ${newArr}`)
         } else {
@@ -194,7 +214,6 @@ function gameEnd(event) {
 
 
 }
-
 
 
 
